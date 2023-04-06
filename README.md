@@ -7,8 +7,7 @@ This is a REST based Insurance Management Platform developed in Spring Boot and 
 Springboot version: 2.7.10
 JDK version: jdk-11
 
-Installation Needed:
-Mysql database.
+Default db: H2(In Memory)
 
 Steps to run:
 mvn clean install
