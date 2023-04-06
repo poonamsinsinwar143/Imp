@@ -19,7 +19,7 @@ public class ImpResponseEntityExceptionHandler {
 	@ExceptionHandler(value = { ImpBusinessException.class })
 	protected ResponseEntity<Object> handleException(ImpBusinessException ex, WebRequest request) {
 		LOG.error(ex.getMessage(), ex);
-		return new ResponseEntity<>(ex.getMessage(), ex.getHttpStatus());
+		return new ResponseEntity<>(Map.of("error", ex.getMessage()), ex.getHttpStatus());
 	}
 
 	@ExceptionHandler(value = { MethodArgumentNotValidException.class })
@@ -35,6 +35,6 @@ public class ImpResponseEntityExceptionHandler {
 	@ExceptionHandler(value = { Exception.class })
 	protected ResponseEntity<Object> handleException(Exception ex, WebRequest request) {
 		LOG.error(ex.getMessage(), ex);
-		return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(Map.of("error", "Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

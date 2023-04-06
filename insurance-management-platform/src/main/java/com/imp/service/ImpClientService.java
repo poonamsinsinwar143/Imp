@@ -117,7 +117,7 @@ public class ImpClientService {
 		Optional<ImpClient> optClient = impClientRepository.findById(clientId);
 		if (!optClient.isPresent()) {
 			LOG.error("Client not found for Id:{}", clientId);
-			throw new ImpBusinessException("Claim not found.", HttpStatus.NOT_FOUND);
+			throw new ImpBusinessException("Client not found.", HttpStatus.NOT_FOUND);
 		}
 
 		ImpClient client = optClient.get();

@@ -21,34 +21,34 @@ import org.springframework.stereotype.Component;
 public class BasicAuthenticationFilter implements Filter {
 	@Value("${imp.security.username}")
 	private String username;
-	
+
 	@Value("${imp.security.password}")
 	private String password;
-	
-	
+
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		
+
 		HttpServletRequest httpReq = (HttpServletRequest) request;
-		
-		if(!httpReq.getRequestURI().contains("swagger") && !httpReq.getRequestURI().contains("api-docs")) {
+
+		if (!httpReq.getRequestURI().contains("swagger") && !httpReq.getRequestURI().contains("api-docs")
+				&& !httpReq.getRequestURI().contains("h2")) {
 			String authorization = httpReq.getHeader("Authorization");
-			if(authorization== null) {
+			if (authorization == null) {
 				sendUnauthorizedResponse(response);
 				return;
 			}
 			String encodedString = authorization.substring(6);
 			byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
 			String decodedString = new String(decodedBytes);
-			if(!decodedString.equals(username+":"+password)) {
+			if (!decodedString.equals(username + ":" + password)) {
 				sendUnauthorizedResponse(response);
 				return;
 			}
 		}
 		chain.doFilter(request, response);
 	}
-	
+
 	private void sendUnauthorizedResponse(ServletResponse response) throws IOException {
 		HttpServletResponse httpRes = (HttpServletResponse) response;
 		httpRes.setContentType("application/json");
@@ -58,5 +58,5 @@ public class BasicAuthenticationFilter implements Filter {
 		out.print("Username or password is incorrect!");
 		out.flush();
 	}
-	
+
 }
